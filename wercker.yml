@@ -40,7 +40,7 @@ push-release:
     - internal/docker-push:
         ports: "8080"
         working-dir: /pipeline/source
-        cmd: ./workshop-web
+        cmd: /workshop-web
         env: "CI=true"
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
