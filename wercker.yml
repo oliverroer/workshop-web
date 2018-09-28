@@ -35,7 +35,7 @@ push-release:
         code: |
             ls -la /
             ls -la
-            mv workshop-web /workshop-web
+            #mv workshop-web /workshop-web
             ls -la /
 
     - internal/docker-push:
