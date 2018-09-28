@@ -33,14 +33,15 @@ push-release:
     - script:
         name: prepare
         code: |
+            ls -la /
             ls -la
-            #mv workshop-web /workshop-web
-            ls -la
+            mv workshop-web /workshop-web
+            ls -la /
 
     - internal/docker-push:
         ports: "8080"
         working-dir: /pipeline/source
-        cmd: /pipeline/source/workshop-web
+        cmd: ./workshop-web
         env: "CI=true"
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
