@@ -1,0 +1,43 @@
+box: golang:1.11
+build:
+  base-path: /go/src/github.com/mies/workshop-web
+  steps:
+    - script:
+        name: go test
+        code: go test
+    - script:
+        name: go build
+        code: go build
+
+push-release:
+  steps:
+    - script:
+        name: prepare
+        code: mv workshop-web /workshop-web
+
+    - internal/docker-push:
+        tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+        ports: "8080"
+        working-dir: /pipeline/source
+        cmd: ./time-api
+        env: "CI=true"
+
+deploy-to-kubernetes:
+    box:
+        id: alpine
+        cmd: /bin/sh
+
+    steps:
+    - bash-template
+
+    - script:
+        name: "Show kubernetes configuration"
+        code: |
+          cat kubernetes.yml
+
+    - kubectl:
+        name: deploy to kubernetes
+        server: $KUBERNETES_MASTER
+        username: $KUBERNETES_USERNAME
+        password: $KUBERNETES_PASSWORD
+        command: apply -f kubernetes.yml
