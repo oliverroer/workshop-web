@@ -27,7 +27,7 @@ func main() {
     router.Path("/").Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         w.Write([]byte("Hello world"))
     }))
-    http.ListenAndServe(":8000", middleware.Instrument{
+    http.ListenAndServe(":8080", middleware.Instrument{
         Duration: RequestDuration,
     }.Wrap(router))
 }

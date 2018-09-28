@@ -16,11 +16,14 @@ push-release:
         code: mv workshop-web /workshop-web
 
     - internal/docker-push:
-        tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         ports: "8080"
         working-dir: /pipeline/source
-        cmd: ./time-api
+        cmd: ./workshop-web
         env: "CI=true"
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        repository: $DOCKER_REPO
+        registry: https://iad.ocir.io/v2
 
 deploy-to-kubernetes:
     box:
