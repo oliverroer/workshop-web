@@ -44,7 +44,7 @@ spec:
       containers:
       - name: workshop-web
         image: iad.ocir.io/oracle-cloudnative/workshop-web
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
 ---
