@@ -1,42 +1,34 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/weaveworks/common/middleware"
+	"github.com/prometheus/client_golang/prometheus/promauto"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var (
-	//RequestDuration a prometheus metric
-	RequestDuration = prometheus.NewHistogramVec(prometheus.HistogramOpts{
-		Name:    "request_duration_seconds",
-		Help:    "Time (in seconds) spent serving HTTP requests.",
-		Buckets: prometheus.DefBuckets,
-	}, []string{"method", "route", "status_code", "ws"})
-)
-
-var (
-	HttpRequestsTotal = prometheus.NewCounterVec(prometheus.CounterOpts{
-		Name: "http_requests_total",
-		Help: "Count of all HTTP requests",
-	}, []string{"code", "method"})
+	requests = promauto.NewCounter(
+		prometheus.CounterOpts{
+			Name: "hello_worlds_total",
+			Help: "Hello Worlds requests.",
+		})
 )
 
 func init() {
-	prometheus.MustRegister(RequestDuration)
-	prometheus.MustRegister(HttpRequestsTotal)
+	prometheus.MustRegister(requests)
+
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	requests.Inc()
+	w.Write([]byte("Hello, is it me you're looking for?"))
 }
 
 func main() {
-	router := mux.NewRouter()
-	router.Path("/metrics").Handler(prometheus.Handler())
-
-	router.Path("/").Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello world"))
-	}))
-	http.ListenAndServe(":8080", middleware.Instrument{
-		Duration: RequestDuration,
-	}.Wrap(router))
+	http.HandleFunc("/", handler)
+	http.Handle("/metrics", promhttp.Handler())
+	log.Fatal(http.ListenAndServe("8080", nil))
 }
