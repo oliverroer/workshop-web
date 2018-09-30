@@ -17,11 +17,6 @@ var (
 		})
 )
 
-func init() {
-	prometheus.MustRegister(requests)
-
-}
-
 func handler(w http.ResponseWriter, r *http.Request) {
 	requests.Inc()
 	w.Write([]byte("Hello, is it me you're looking for?"))
