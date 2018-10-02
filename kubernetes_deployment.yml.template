@@ -5,27 +5,27 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: time-api
+  name: workshop-web
   labels:
     commit: ${WERCKER_RUN_ID}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: time-api
+      app: workshop-web
   template:
     metadata:
       labels:
-        app: time-api
+        app: workshop-web
         commit: ${WERCKER_RUN_ID}
     spec:
       containers:
-      - name: time-api-server
+      - name: workshop-web-server
         image: ${DOCKER_REPO}:${WERCKER_GIT_BRANCH}
         imagePullPolicy: Always
         ports:
-        - name: time-api-server
+        - name: workshop-web-server
           containerPort: 8080
           protocol: TCP
       imagePullSecrets:
-        - name: ${IMAGEPULL_SECRET}
+        - name: ${OKE_IMAGEPULL_SECRET}

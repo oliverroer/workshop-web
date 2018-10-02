@@ -6,9 +6,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: time-api
+  name: workshop-web
   labels:
-    app: time-api
+    app: workshop-web
     commit: ${WERCKER_RUN_ID}
 spec:
   ports:
@@ -17,23 +17,23 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app: time-api
+    app: workshop-web
     commit: ${WERCKER_RUN_ID}
 ---
 # Ingress
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: time-api-ingress
+  name: workshop-web-ingress
   annotations:
     kubernetes.io/ingress.class: "nginx"
     ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   rules:
-  - host: time-api.${WERCKER_APPLICATION_OWNER_NAME}.demo.wercker.com
+  - host: ${APP_HOSTNAME} 
     http:
       paths:
       - path:
         backend:
-          serviceName: time-api
+          serviceName: workshop-web
           servicePort: 8080
