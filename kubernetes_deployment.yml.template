@@ -28,4 +28,4 @@ spec:
           containerPort: 8080
           protocol: TCP
       imagePullSecrets:
-        - name: ${OKE_IMAGEPULL_SECRET}
+        - name: ${KUBERNETES_IMAGEPULL_SECRET}
