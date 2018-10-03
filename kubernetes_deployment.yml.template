@@ -5,26 +5,26 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: workshop-web
+  name: ws-web
   labels:
     commit: ${WERCKER_RUN_ID}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: workshop-web
+      app: ws-web
   template:
     metadata:
       labels:
-        app: workshop-web
+        app: ws-web
         commit: ${WERCKER_RUN_ID}
     spec:
       containers:
-      - name: workshop-web-server
+      - name: ws-web-server
         image: ${DOCKER_REPO}:${WERCKER_GIT_BRANCH}
         imagePullPolicy: Always
         ports:
-        - name: workshop-web-server
+        - name: ws-web-server
           containerPort: 8080
           protocol: TCP
       imagePullSecrets:
