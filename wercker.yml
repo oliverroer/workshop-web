@@ -84,11 +84,11 @@ deploy-to-kubernetes:
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: patch deployment/time-api -p '{"spec":{"progressDeadlineSeconds":60}}'
+        command: patch deployment/ws-web -p '{"spec":{"progressDeadlineSeconds":60}}'
 
     - kubectl:
         name: check deployment status
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: rollout status deployment/time-api
+        command: rollout status deployment/ws-web
