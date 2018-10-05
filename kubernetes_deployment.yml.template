@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: ws-web-server
-        image: ${DOCKER_REPO}:${WERCKER_GIT_BRANCH}
+        image: ${DOCKER_REPO}:${DOCKER_TAG}
         imagePullPolicy: Always
         ports:
         - name: ws-web-server
